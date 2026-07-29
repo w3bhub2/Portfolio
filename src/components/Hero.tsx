@@ -78,7 +78,8 @@ export default function Hero() {
               🎮 Play 2048
             </a>
             <a
-              href="/resume.html"
+              href="/resume.pdf"
+              download="Usman_Ghani_Resume.pdf"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-white backdrop-blur transition-colors hover:bg-white/10"
