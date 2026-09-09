@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
 import Section from "./Section";
+import Reveal from "./Reveal";
 import { experience } from "../data";
 import Icon from "./Icon";
 
@@ -11,23 +11,16 @@ export default function Experience() {
       title="6+ years of building & leading"
     >
       <div className="relative">
-        <div className="absolute left-[15px] top-2 bottom-2 hidden w-px bg-gradient-to-b from-indigo-500/50 via-white/10 to-transparent sm:block" />
+        <div className="absolute bottom-2 left-[15px] top-2 hidden w-px bg-gradient-to-b from-indigo-500/50 via-white/10 to-transparent sm:block" />
 
         <div className="space-y-5 sm:space-y-6">
           {experience.map((exp, i) => (
-            <motion.div
-              key={exp.role + exp.company}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.45, delay: i * 0.05 }}
-              className="relative sm:pl-12"
-            >
+            <Reveal key={exp.role + exp.company} delay={i * 60} className="relative sm:pl-12">
               <span className="absolute left-0 top-1 hidden h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-slate-900 text-indigo-400 sm:flex">
                 <Icon name="briefcase" className="h-4 w-4" />
               </span>
 
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur transition-colors hover:border-white/20 sm:p-6">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition-colors hover:border-white/20 sm:p-6">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <h3 className="text-base font-semibold text-white sm:text-lg">
@@ -87,7 +80,7 @@ export default function Experience() {
                   </div>
                 )}
               </div>
-            </motion.div>
+            </Reveal>
           ))}
         </div>
       </div>

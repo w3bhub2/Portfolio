@@ -98,6 +98,7 @@ export default function Icon({ name, className }: IconProps) {
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
+      aria-hidden="true"
     >
       {paths[name] ?? null}
     </svg>

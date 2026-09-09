@@ -1,20 +1,105 @@
 @import "tailwindcss";
 
+/* ============================================================
+   iOS / Safari hardening
+   ============================================================ */
+
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
-}
-
-body {
-  background-color: #020617;
-}
-
-
-/* Hide scrollbar but keep scrolling */
-html {
-  scrollbar-width: none;
+  scroll-padding-top: 5rem; /* fixed navbar offset for anchor jumps */
+  scrollbar-width: none; /* hide scrollbar but keep scrolling (Firefox) */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%; /* stop iOS auto font-boost on orientation change */
 }
 
 html::-webkit-scrollbar {
-  display: none;
+  display: none; /* hide scrollbar but keep scrolling (Chrome/Safari) */
+}
+
+body {
+  /* Hex fallback: oklch() needs iOS 15.4+ — always keep the base dark */
+  background-color: #020617;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Removes the grey tap flash on links/buttons in iOS Safari */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Hero height: `svh` is the correct unit for iOS Safari, but it only
+   exists from iOS 15.4 — declare the vh fallback first, then upgrade. */
+.min-h-hero {
+  min-height: 100vh; /* fallback: every iOS */
+}
+@supports (min-height: 100svh) {
+  .min-h-hero {
+    min-height: 100svh; /* iOS 15.4+ — excludes collapsing toolbar area */
+  }
+}
+
+/* Fixed navbar clears the iPhone notch / Dynamic Island */
+.pt-safe {
+  padding-top: calc(env(safe-area-inset-top, 0px) + 1rem);
+}
+
+/* The 2048 board: stop iOS text selection + long-press callout + rubber-band
+   scrolling while swiping tiles. (Tailwind's `touch-none`/`select-none` don't
+   emit the -webkit- prefixes that older iOS needs.) */
+.game-board {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+}
+
+/* ============================================================
+   Scroll-reveal (replaces framer-motion — pure CSS, GPU-cheap,
+   zero JS animation cost on low-end iPhones)
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Accessibility: respect users who disable motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Visible keyboard focus (desktop a11y) */
+:focus-visible {
+  outline: 2px solid #818cf8;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Grid pattern used in the hero background */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
 }

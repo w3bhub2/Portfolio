@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { profile } from "../data";
 import Icon from "./Icon";
 
@@ -6,31 +5,19 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[100svh] items-center overflow-hidden pt-20 sm:pt-24"
+      className="relative flex min-h-hero items-center overflow-hidden pt-24 pb-16 sm:pt-28"
     >
-      {/* background glow */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-24 left-1/4 h-72 w-72 rounded-full bg-indigo-600/30 blur-[120px] sm:h-96 sm:w-96" />
-        <div className="absolute bottom-0 right-1/4 h-72 w-72 rounded-full bg-violet-600/20 blur-[120px] sm:h-96 sm:w-96" />
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
+      {/* background glow — GPU-friendly sizes (iOS chokes on huge blur radii) */}
+      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+        <div className="absolute -top-24 left-1/4 h-72 w-72 rounded-full bg-indigo-600/25 blur-3xl sm:h-96 sm:w-96" />
+        <div className="absolute bottom-0 right-1/4 h-72 w-72 rounded-full bg-violet-600/15 blur-3xl sm:h-96 sm:w-96" />
+        <div className="absolute inset-0 bg-grid opacity-60" />
       </div>
 
       <div className="relative mx-auto w-full max-w-6xl px-5 sm:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="max-w-3xl"
-        >
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 backdrop-blur sm:text-sm">
-            <span className="relative flex h-2 w-2">
+        <div className="max-w-3xl reveal reveal-in">
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 sm:text-sm">
+            <span className="relative flex h-2 w-2" aria-hidden="true">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
             </span>
@@ -67,13 +54,13 @@ export default function Hero() {
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-white backdrop-blur transition-colors hover:bg-white/10 sm:px-6 sm:py-3.5"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10 sm:px-6 sm:py-3.5"
             >
               Let's talk
             </a>
             <a
-              href="#play"
-              className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-3 text-sm font-medium text-emerald-300 backdrop-blur transition-colors hover:bg-emerald-500/15"
+              href="#play-board"
+              className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-3 text-sm font-medium text-emerald-300 transition-colors hover:bg-emerald-500/15"
             >
               🎮 Play 2048
             </a>
@@ -82,7 +69,7 @@ export default function Hero() {
               download="Usman_Ghani_Resume.pdf"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-white backdrop-blur transition-colors hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
             >
               <Icon name="download" className="h-4 w-4" />
               Resume
@@ -120,7 +107,7 @@ export default function Hero() {
               Email
             </a>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

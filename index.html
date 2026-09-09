@@ -7,7 +7,14 @@
 
     <!-- Favicon (inline SVG — no extra request, works everywhere) -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%23a855f7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-family='system-ui,sans-serif' font-size='52' font-weight='800' text-anchor='middle' fill='white'%3EUG%3C/text%3E%3C/svg%3E" />
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-family='system-ui,sans-serif' font-size='52' font-weight='800' text-anchor='middle' fill='white'%3EUG%3C/text%3E%3C/svg%3E" />
+    <!-- iOS home-screen icon (must be a real PNG — Safari ignores SVG here) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- iOS web-app meta (Add to Home Screen → fullscreen, dark status bar) -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Usman Ghani" />
 
     <!-- Primary SEO -->
     <title>Usman Ghani — Digital Operations, AI Automation & Full Stack Developer | Tumakuru, India</title>
@@ -59,7 +66,7 @@
       "url": "https://usman-ops.netlify.app/",
       "email": "mailto:usmande2025@gmail.com",
       "telephone": "+917899186293",
-      "image": "https://usman-ops.netlify.app/",
+      "image": "https://usman-ops.netlify.app/og-image.jpg",
       "sameAs": [
         "https://github.com/w3bhub2",
         "https://www.linkedin.com/in/usmanghani-ops/",
@@ -190,6 +197,12 @@
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <p style="font-family:system-ui;color:#94a3b8;text-align:center;padding:3rem 1rem">
+        This portfolio needs JavaScript enabled. You can view
+        <a href="/resume.html" style="color:#818cf8">Usman's resume here</a>.
+      </p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

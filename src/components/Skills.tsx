@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
 import Section from "./Section";
+import Reveal from "./Reveal";
 import { skillGroups, coreCompetencies } from "../data";
 import Icon from "./Icon";
 
@@ -12,13 +12,10 @@ export default function Skills() {
     >
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {skillGroups.map((group, i) => (
-          <motion.div
+          <Reveal
             key={group.title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: i * 0.05 }}
-            className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur transition-colors hover:border-indigo-500/40 hover:bg-white/[0.05]"
+            delay={(i % 3) * 60}
+            className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-colors hover:border-indigo-500/40 hover:bg-white/[0.05]"
           >
             <div className="mb-4 flex items-center gap-3">
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 text-indigo-400">
@@ -36,11 +33,11 @@ export default function Skills() {
                 </span>
               ))}
             </div>
-          </motion.div>
+          </Reveal>
         ))}
       </div>
 
-      <div className="mt-12">
+      <Reveal delay={80} className="mt-12">
         <h3 className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
           Core Competencies
         </h3>
@@ -54,7 +51,7 @@ export default function Skills() {
             </span>
           ))}
         </div>
-      </div>
+      </Reveal>
     </Section>
   );
 }

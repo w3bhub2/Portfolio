@@ -95,12 +95,12 @@ export const experience = [
     company: "MatzHub",
     period: "2026 – Present",
     description:
-      "MatzHub is a live reseller platform founded by Mohammed Zaid, where I lead all digital operations and technical execution.",
+      "MatzHub is a live reseller platform founded by Mohammed Zaid. I built and run its automation core: the WhatsApp ingestion pipeline, the Telegram control bots, the admin dashboards, Cashfree subscription billing and the publish pipeline.",
     points: [
       "Lead the complete digital operations of the business.",
       "Designed and developed the company website.",
-      "Built product management and e-commerce automation workflows.",
-      "Developed AI-assisted business automation systems.",
+      "Built the WhatsApp ingestion pipeline that turns supplier posts into priced, published listings.",
+      "Run day-to-day operations from Telegram: orders, alerts, sync and the daily digest in chat.",
       "Managed cloud deployment, hosting, domains, and technical infrastructure.",
       "Built backend workflows using Node.js and APIs.",
       "Implemented automation to reduce repetitive manual work.",
@@ -134,6 +134,7 @@ export const experience = [
       "Implemented SEO and technical optimisation.",
       "Configured Google Analytics and Search Console.",
       "Built CRM workflows and enquiry management systems.",
+      "Designed and built an automated email outreach pipeline: import, validation, segmentation, personalized sending, follow-up sequences and lead-level tracking.",
       "Managed branding and digital marketing initiatives.",
       "Integrated AI tools into business workflows.",
       "Worked directly with stakeholders to plan and execute digital strategies.",
@@ -184,23 +185,80 @@ export const experience = [
   },
 ];
 
-export const projects = [
+export type Project = {
+  name: string;
+  tag: string;
+  description: string;
+  highlights: string[];
+  tech: string[];
+  accent: string;
+  url: string;
+  featured?: boolean;
+  flow?: string[];
+  stats?: { value: string; label: string }[];
+};
+
+export const projects: Project[] = [
   {
     name: "MatzHub Platform",
-    tag: "Reseller Platform",
+    tag: "Reseller Automation",
+    featured: true,
     description:
-      "A modern reseller platform focused on automating business operations.",
+      "A reseller platform that runs itself. Suppliers post product photos and videos into a WhatsApp group. MatzHub reads them, cleans them, prices them and publishes them to the store, then reports back over Telegram. I built the pipeline, the bots, the dashboards and the billing.",
     highlights: [
-      "AI-powered automation workflows",
-      "Product management system",
-      "E-commerce workflow automation",
-      "Cloud deployment",
-      "Scalable architecture",
-      "Production-ready business platform",
+      "Suppliers drop photos and videos into a WhatsApp group and do nothing else",
+      "Videos become sharpness-scored cover frames; blur and dupes dropped automatically",
+      "Attributes extracted and prices set by rules, then live on the site",
+      "Telegram admin bot with buttons for sync, health, jobs, channels and payments",
+      "Orders, alerts and the 08:00 daily digest land in chat, not a mailbox",
+      "Cashfree subscription billing with verified webhooks and renewal reminders",
+      "Admin dashboard shows only what needs a human decision",
+      "Cron jobs keep it healthy: reconcile, trending, expiries, backups",
     ],
-    tech: ["Next.js", "React", "Node.js", "Supabase", "AI Tools"],
+    flow: [
+      "Supplier posts on WhatsApp",
+      "Dedupe, extract, price",
+      "Live in the store",
+      "Telegram reports back",
+    ],
+    stats: [
+      { value: "10–15 min → under 1 min", label: "per listing, by hand vs. automated" },
+      { value: "0", label: "uploads done by hand on most days" },
+      { value: "1 queue", label: "only what needs a human decision" },
+    ],
+    tech: [
+      "Next.js",
+      "TypeScript",
+      "Supabase",
+      "Drizzle",
+      "WhatsApp (Baileys)",
+      "ffmpeg + sharp",
+      "Cashfree API",
+      "Telegram Bots",
+      "Vercel Cron",
+      "PWA",
+    ],
     accent: "from-indigo-500 to-blue-500",
     url: "https://www.matzhub.com",
+  },
+  {
+    name: "Aurum Bespoke — Email Outreach Automation",
+    tag: "Business Automation",
+    description:
+      "An outreach system I designed and built for Aurum Bespoke to turn a large prospect list into a structured, personalized, trackable pipeline. It runs end to end: leads are imported, cleaned and validated, segmented by attributes, then contacted with personalized email instead of a bulk blast. Follow-ups run on predefined sequences, every lead keeps its own state, and duplicate or failed sends are caught before they reach an inbox.",
+    highlights: [
+      "Prospect data imported, cleaned and validated before any outreach",
+      "Segmentation by attributes so each group gets the right angle",
+      "Personalized email per prospect, not identical bulk sends",
+      "Automated sending through an email API integration",
+      "Predefined follow-up sequences run without manual touches",
+      "Lead-level state: the system knows where every prospect is",
+      "Duplicate prevention plus retry and delivery-state handling",
+      "Outreach activity and outcomes visible in one place",
+    ],
+    tech: [],
+    accent: "from-sky-500 to-cyan-400",
+    url: "https://www.aurumbespoke.com",
   },
   {
     name: "Aurum Bespoke Website",
@@ -263,27 +321,4 @@ export const additionalInfo = [
   "Comfortable working in startup environments.",
   "Strong understanding of business operations combined with technical implementation.",
   "Passionate about AI, automation, scalable systems, and continuous learning.",
-];
-
-export const faqs = [
-  {
-    q: "Who is Usman Ghani?",
-    a: "Usman Ghani is a Digital Operations and AI Automation professional based in Tumakuru, Karnataka, India, with over 6 years of operations leadership experience and hands-on expertise in full stack web development.",
-  },
-  {
-    q: "What services does Usman Ghani offer?",
-    a: "Usman builds production-ready websites, designs AI-powered business automation workflows, integrates cloud services and APIs, deploys modern web applications, and manages complete digital ecosystems.",
-  },
-  {
-    q: "Which technologies does Usman work with?",
-    a: "Primary stack includes React, Next.js, TypeScript, Node.js, Express, Tailwind CSS, Supabase, MongoDB, Cloudflare, Netlify, and Vercel, with Puppeteer and AI tools for automation.",
-  },
-  {
-    q: "How can I contact Usman Ghani?",
-    a: "You can reach Usman by email at usmande2025@gmail.com, by phone at +91 7899186293, on GitHub at github.com/w3bhub2, or on LinkedIn at linkedin.com/in/usmanghani-ops.",
-  },
-  {
-    q: "Where has Usman worked?",
-    a: "Usman currently leads digital operations at MatzHub and previously led digital transformation at Aurum Bespoke. He also has 6+ years of retail operations management experience.",
-  },
 ];

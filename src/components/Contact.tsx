@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
 import Section from "./Section";
+import Reveal from "./Reveal";
 import { profile, education } from "../data";
 import Icon from "./Icon";
 
@@ -14,14 +14,8 @@ export default function Contact() {
   return (
     <Section id="contact" eyebrow="Contact" title="Let's build something together">
       <div className="grid gap-5 lg:grid-cols-5">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="lg:col-span-3"
-        >
-          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-indigo-500/10 to-violet-500/5 p-6 backdrop-blur sm:p-8">
+        <Reveal className="lg:col-span-3">
+          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-indigo-500/10 to-violet-500/5 p-6 sm:p-8">
             <p className="text-base leading-relaxed text-slate-300 sm:text-lg">
               Whether you need a production-ready website, business automation, or
               a hands-on operator who understands both the technical and business
@@ -65,23 +59,17 @@ export default function Contact() {
                 download="Usman_Ghani_Resume.pdf"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-white backdrop-blur transition-colors hover:bg-white/10"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
               >
                 <Icon name="download" className="h-5 w-5" />
                 Download Resume
               </a>
             </div>
           </div>
-        </motion.div>
+        </Reveal>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="lg:col-span-2"
-        >
-          <div className="h-full rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur sm:p-8">
+        <Reveal delay={100} className="lg:col-span-2">
+          <div className="h-full rounded-2xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
             <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 text-indigo-400">
               <Icon name="cap" className="h-6 w-6" />
             </span>
@@ -100,7 +88,7 @@ export default function Contact() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </Reveal>
       </div>
     </Section>
   );

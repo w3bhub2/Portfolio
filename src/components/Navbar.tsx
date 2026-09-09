@@ -11,17 +11,33 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  // BUG FIX: the old code had `false ? ... : ...` hardcoded, so the navbar
+  // never gained a background and links floated invisibly over content.
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const solid = scrolled || open;
 
   return (
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        false
-          ? "border-b border-white/10 bg-slate-950/80 backdrop-blur-xl"
-          : "bg-transparent"
+        solid
+          ? "border-b border-white/10 bg-slate-950/85 shadow-lg shadow-black/20 backdrop-blur-xl"
+          : "border-b border-transparent bg-transparent"
       )}
     >
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <nav
+        className="mx-auto flex max-w-6xl items-center justify-between px-6 pb-4"
+        style={{ paddingTop: "max(env(safe-area-inset-top, 0px), 1rem)" }}
+        aria-label="Main navigation"
+      >
         <a href="#top" className="group flex items-center gap-2">
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 font-bold text-white shadow-lg shadow-indigo-500/30">
             UG
@@ -52,24 +68,26 @@ export default function Navbar() {
         <button
           onClick={() => setOpen((v) => !v)}
           className="flex h-10 w-10 items-center justify-center rounded-lg text-white md:hidden"
-          aria-label="Menu"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
         >
           <div className="space-y-1.5">
             <span
               className={cn(
-                "block h-0.5 w-6 bg-current transition-transform",
+                "block h-0.5 w-6 bg-current transition-transform duration-200",
                 open && "translate-y-2 rotate-45"
               )}
             />
             <span
               className={cn(
-                "block h-0.5 w-6 bg-current transition-opacity",
+                "block h-0.5 w-6 bg-current transition-opacity duration-200",
                 open && "opacity-0"
               )}
             />
             <span
               className={cn(
-                "block h-0.5 w-6 bg-current transition-transform",
+                "block h-0.5 w-6 bg-current transition-transform duration-200",
                 open && "-translate-y-2 -rotate-45"
               )}
             />
@@ -78,7 +96,11 @@ export default function Navbar() {
       </nav>
 
       {open && (
-        <div className="border-t border-white/10 bg-slate-950/95 px-6 py-4 md:hidden">
+        <div
+          id="mobile-menu"
+          className="border-t border-white/10 bg-slate-950/95 px-6 py-4 md:hidden"
+          style={{ paddingBottom: "max(env(safe-area-inset-bottom, 0px), 1rem)" }}
+        >
           <div className="flex flex-col gap-1">
             {links.map((l) => (
               <a

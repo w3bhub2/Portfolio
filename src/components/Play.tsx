@@ -1,18 +1,12 @@
-import { motion } from "framer-motion";
 import Section from "./Section";
+import Reveal from "./Reveal";
 import Game2048 from "./Game2048";
 
 export default function Play() {
   return (
     <Section id="play" eyebrow="Mini Project" title="Play 2048 — built into this portfolio">
       <div className="grid gap-8 lg:grid-cols-5">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="lg:col-span-2"
-        >
+        <Reveal className="lg:col-span-2">
           <p className="text-base leading-relaxed text-slate-300">
             A modern recreation of the classic 2048 game — built with React and
             TypeScript. This is a live, playable build of the project.
@@ -38,16 +32,14 @@ export default function Play() {
           <p className="mt-4 text-xs text-slate-500">
             Built as part of an ongoing expansion into a custom game engine.
           </p>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="lg:col-span-3"
-        >
+        </Reveal>
+        {/* The board itself must NOT be wrapped in a scroll-reveal: when the
+            user taps "Play 2048" the anchor jump lands here and a translate
+            transition makes the grid slide into place. Render it directly
+            so the board is fully formed the moment the page arrives. */}
+        <div id="play-board" className="scroll-mt-28 lg:col-span-3">
           <Game2048 />
-        </motion.div>
+        </div>
       </div>
     </Section>
   );

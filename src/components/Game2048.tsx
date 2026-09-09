@@ -135,7 +135,29 @@ function canMove(board: (Tile | null)[][]): boolean {
   return false;
 }
 
+const BEST_KEY = "ug-2048-best";
 const INTRO_KEY = "ug-2048-intro-seen";
+
+/* ------------------------------------------------------------------ */
+/* iOS FIX: Safari throws QuotaExceededError on localStorage.setItem   */
+/* in Private Browsing. An uncaught throw inside a React effect would  */
+/* unmount the whole app (blank page). Every access is now guarded.    */
+/* ------------------------------------------------------------------ */
+function readLS(key: string): string | null {
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function writeLS(key: string, value: string): void {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    /* iOS Safari private mode — silently ignore */
+  }
+}
 
 export default function Game2048() {
   const [{ board, nextId }, setBoard] = useState(() => {
@@ -145,32 +167,39 @@ export default function Game2048() {
   const [score, setScore] = useState(0);
   const [best, setBest] = useState<number>(() => {
     if (typeof window === "undefined") return 0;
-    const v = localStorage.getItem("ug-2048-best");
-    return v ? parseInt(v, 10) : 0;
+    const v = readLS(BEST_KEY);
+    return v ? parseInt(v, 10) || 0 : 0;
   });
   const [won, setWon] = useState(false);
+  const [wonDismissed, setWonDismissed] = useState(false);
   const [lost, setLost] = useState(false);
   const [showIntro, setShowIntro] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
-    return !localStorage.getItem(INTRO_KEY);
+    return !readLS(INTRO_KEY);
   });
   const touchRef = useRef<{ x: number; y: number } | null>(null);
+  const boardRef = useRef<HTMLDivElement>(null);
+  const lostRef = useRef(false);
+
+  useEffect(() => {
+    lostRef.current = lost;
+  }, [lost]);
 
   useEffect(() => {
     if (score > best) {
       setBest(score);
-      localStorage.setItem("ug-2048-best", String(score));
+      writeLS(BEST_KEY, String(score));
     }
   }, [score, best]);
 
   const dismissIntro = useCallback(() => {
     setShowIntro(false);
-    try { localStorage.setItem(INTRO_KEY, "1"); } catch {}
+    writeLS(INTRO_KEY, "1");
   }, []);
 
   const doMove = useCallback(
     (dir: Move) => {
-      if (lost) return;
+      if (lostRef.current) return;
       const { board: nb, gained, moved, nextId: nid } = move(board, dir, nextId);
       if (!moved) return;
       setBoard({ board: nb, nextId: nid });
@@ -178,9 +207,11 @@ export default function Game2048() {
       if (!won && hasWon(nb)) setWon(true);
       else if (!canMove(nb)) setLost(true);
     },
-    [board, nextId, lost, won]
+    [board, nextId, won]
   );
 
+  /* Keyboard: only hijack arrows/WASD while the game board is actually
+     on screen — otherwise the page scroll keys get eaten for nothing. */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const map: Record<string, Move> = {
@@ -188,7 +219,16 @@ export default function Game2048() {
         w: "up", s: "down", a: "left", d: "right",
       };
       const d = map[e.key];
-      if (d) { e.preventDefault(); doMove(d); }
+      if (!d) return;
+      const el = boardRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const onScreen = r.bottom > 0 && r.top < window.innerHeight;
+      if (!onScreen) return;
+      const target = e.target as HTMLElement | null;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) return;
+      e.preventDefault();
+      doMove(d);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -196,20 +236,23 @@ export default function Game2048() {
 
   const onTouchStart = (e: React.TouchEvent) => {
     const t = e.touches[0];
+    if (!t) return;
     touchRef.current = { x: t.clientX, y: t.clientY };
   };
   const onTouchEnd = (e: React.TouchEvent) => {
     if (!touchRef.current) return;
     const t = e.changedTouches[0];
+    if (!t) return;
     const dx = t.clientX - touchRef.current.x;
     const dy = t.clientY - touchRef.current.y;
     const adx = Math.abs(dx);
     const ady = Math.abs(dy);
     const threshold = 24;
+    touchRef.current = null;
     if (Math.max(adx, ady) < threshold) return;
+    // Prefer the dominant axis — a slightly diagonal swipe still feels right.
     if (adx > ady) doMove(dx > 0 ? "right" : "left");
     else doMove(dy > 0 ? "down" : "up");
-    touchRef.current = null;
   };
 
   const reset = () => {
@@ -217,6 +260,7 @@ export default function Game2048() {
     setBoard({ board, nextId: id });
     setScore(0);
     setWon(false);
+    setWonDismissed(false);
     setLost(false);
   };
 
@@ -225,6 +269,9 @@ export default function Game2048() {
     const t = board[r][c];
     if (t) tiles.push(t);
   }
+
+  const showWonOverlay = won && !wonDismissed;
+  const showEndOverlay = lost || showWonOverlay;
 
   return (
     <div className="mx-auto w-full max-w-md">
@@ -248,19 +295,20 @@ export default function Game2048() {
       </div>
 
       <div
-        className="relative touch-none select-none rounded-2xl bg-slate-800/60 p-2 sm:p-3"
+        ref={boardRef}
+        className="game-board relative select-none rounded-2xl bg-slate-800/60 p-2 sm:p-3"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
         role="application"
         aria-label="2048 game board — swipe or use arrow keys"
       >
-        <div className="grid grid-cols-4 gap-2 sm:gap-3">
+        <div className="grid grid-cols-4 gap-2 sm:gap-3" aria-hidden="true">
           {Array.from({ length: 16 }).map((_, i) => (
             <div key={i} className="aspect-square rounded-md bg-slate-700/50 sm:rounded-lg" />
           ))}
         </div>
 
-        <div className="absolute inset-2 sm:inset-3 grid grid-cols-4 grid-rows-4 gap-2 sm:gap-3">
+        <div className="absolute inset-2 grid grid-cols-4 grid-rows-4 gap-2 sm:inset-3 sm:gap-3">
           {tiles.map((t) => {
             const color = COLORS[t.value] ?? "bg-slate-900 text-white";
             const textSize =
@@ -283,7 +331,7 @@ export default function Game2048() {
 
         {/* One-time intro overlay — shows once per device, then remembers */}
         {showIntro && (
-          <div className="absolute inset-2 sm:inset-3 flex items-center justify-center rounded-2xl bg-slate-950/90 backdrop-blur">
+          <div className="absolute inset-2 flex items-center justify-center rounded-2xl bg-slate-950/90 sm:inset-3">
             <div className="px-6 py-5 text-center">
               <p className="text-lg font-bold text-white sm:text-xl">How to play</p>
               <p className="mt-2 text-sm leading-relaxed text-slate-300 sm:text-base">
@@ -303,19 +351,29 @@ export default function Game2048() {
           </div>
         )}
 
-        {(won || lost) && (
-          <div className="absolute inset-2 sm:inset-3 flex items-center justify-center rounded-2xl bg-slate-950/80 backdrop-blur">
-            <div className="text-center">
+        {showEndOverlay && (
+          <div className="absolute inset-2 flex items-center justify-center rounded-2xl bg-slate-950/80 sm:inset-3">
+            <div className="px-6 text-center">
               <p className="text-2xl font-bold text-white">
-                {won ? "You reached 2048! 🎉" : "Game Over"}
+                {showWonOverlay ? "You reached 2048! 🎉" : "Game Over"}
               </p>
               <p className="mt-1 text-sm text-slate-400">Final score: {score}</p>
-              <button
-                onClick={reset}
-                className="mt-4 rounded-lg bg-gradient-to-r from-indigo-500 to-violet-600 px-5 py-2 text-sm font-medium text-white"
-              >
-                Play again
-              </button>
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+                {showWonOverlay && (
+                  <button
+                    onClick={() => setWonDismissed(true)}
+                    className="rounded-lg border border-white/15 bg-white/5 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10"
+                  >
+                    Keep going
+                  </button>
+                )}
+                <button
+                  onClick={reset}
+                  className="rounded-lg bg-gradient-to-r from-indigo-500 to-violet-600 px-5 py-2 text-sm font-medium text-white"
+                >
+                  Play again
+                </button>
+              </div>
             </div>
           </div>
         )}
