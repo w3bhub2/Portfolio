@@ -17,7 +17,7 @@ export default function Contact() {
         <Reveal className="lg:col-span-3">
           <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-indigo-500/10 to-violet-500/5 p-6 sm:p-8">
             <p className="text-base leading-relaxed text-slate-300 sm:text-lg">
-              Whether you need a production-ready website, business automation, or
+              Whether you need a new website, business automation, or
               a hands-on operator who understands both the technical and business
               sides — I'd love to hear from you.
             </p>

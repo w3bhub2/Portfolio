@@ -37,8 +37,8 @@ export default function Hero() {
           </p>
 
           <p className="mt-3 text-sm leading-relaxed text-slate-400 sm:text-base">
-            {profile.tagline} — turning 6+ years of operations leadership into
-            scalable, technical solutions.
+            {profile.tagline} — turning operations leadership into
+            scalable, technical systems.
           </p>
 
           <div className="mt-7 flex flex-wrap items-center gap-3">

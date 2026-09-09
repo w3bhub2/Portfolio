@@ -1,10 +1,19 @@
 import { profile } from "../data";
 import Icon from "./Icon";
 
+const footerLinks = [
+  { label: "About", href: "#about" },
+  { label: "Skills", href: "#skills" },
+  { label: "Experience", href: "#experience" },
+  { label: "Projects", href: "#projects" },
+  { label: "Contact", href: "#contact" },
+];
+
 export default function Footer() {
   return (
     <footer className="border-t border-white/10 bg-slate-950">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-6 py-10 sm:flex-row">
+      <div className="mx-auto max-w-6xl px-6 py-10">
+      <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
         <div className="flex items-center gap-2">
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 font-bold text-white">
             UG
@@ -48,6 +57,18 @@ export default function Footer() {
         <p className="text-xs text-slate-500">
           © {new Date().getFullYear()} Usman Ghani. All rights reserved.
         </p>
+      </div>
+      <nav aria-label="Footer" className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+        {footerLinks.map((l) => (
+          <a
+            key={l.href}
+            href={l.href}
+            className="text-xs text-slate-500 transition-colors hover:text-white"
+          >
+            {l.label}
+          </a>
+        ))}
+      </nav>
       </div>
     </footer>
   );

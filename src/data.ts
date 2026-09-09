@@ -8,12 +8,12 @@ export const profile = {
   github: "https://github.com/w3bhub2",
   linkedin: "https://www.linkedin.com/in/usmanghani-ops/",
   summary:
-    "Digital Operations and AI Automation professional with over 6 years of operations leadership experience and hands-on expertise in web development, business automation, AI-powered workflows, and digital transformation. I build production-ready websites, automate business processes, integrate cloud services and APIs, deploy modern web applications, and manage complete digital ecosystems for growing businesses.",
+    "Digital Operations and AI Automation professional with over 6 years of operations leadership experience and hands-on expertise in web development, business automation, AI-powered workflows, and digital transformation. My work sits where operations meets engineering — cloud APIs, deployments, and the day-to-day processes growing businesses actually run on.",
 };
 
 export const highlights = [
   { value: "6+", label: "Years of Operations Leadership" },
-  { value: "4", label: "Production Projects Delivered" },
+  { value: "5", label: "Production Projects Delivered" },
   { value: "14", label: "Team Members Led" },
   { value: "2", label: "Businesses Digitally Transformed" },
 ];
@@ -99,8 +99,8 @@ export const experience = [
     points: [
       "Lead the complete digital operations of the business.",
       "Designed and developed the company website.",
-      "Built the WhatsApp ingestion pipeline that turns supplier posts into priced, published listings.",
-      "Run day-to-day operations from Telegram: orders, alerts, sync and the daily digest in chat.",
+      "Own the ingestion pipeline end to end, from supplier WhatsApp groups to published listings.",
+      "Run daily operations from the Telegram control bot instead of living in an inbox.",
       "Managed cloud deployment, hosting, domains, and technical infrastructure.",
       "Built backend workflows using Node.js and APIs.",
       "Implemented automation to reduce repetitive manual work.",
@@ -225,12 +225,12 @@ export const projects: Project[] = [
     diagram: {
       src: "/matzhub-architecture.svg",
       alt: "MatzHub system architecture: suppliers post to WhatsApp, a persistent worker feeds a seven-step ingestion pipeline into Supabase, and a Next.js app on Vercel serves the store with AI, payment, notification and monitoring services around it.",
-      caption: "The full system, end to end — tap to open",
+      caption: "The full system, end to end — open full size",
     },
     stats: [
       { value: "10–15 min → under 1 min", label: "per listing, by hand vs. automated" },
       { value: "0", label: "uploads done by hand on most days" },
-      { value: "1 queue", label: "only what needs a human decision" },
+      { value: "1 queue", label: "decisions left for the human" },
     ],
     tech: [
       "Next.js",

@@ -39,6 +39,15 @@ export default function Experience() {
                           <Icon name="external" className="h-3 w-3" />
                         </a>
                       )}
+                      {exp.company === "MatzHub" && (
+                        <a
+                          href="#matzhub"
+                          className="inline-flex items-center gap-1 text-xs text-indigo-300 transition-colors hover:text-white"
+                        >
+                          · See how it&apos;s built
+                          <Icon name="arrow" className="h-3 w-3 rotate-90" />
+                        </a>
+                      )}
                     </div>
                   </div>
                   {exp.period && (

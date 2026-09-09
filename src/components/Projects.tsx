@@ -21,6 +21,7 @@ function TechChips({ tech }: { tech: string[] }) {
 
 function FeaturedProject({ p }: { p: Project }) {
   return (
+    <div id="matzhub" className="scroll-mt-24">
     <Reveal className="relative overflow-hidden rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-indigo-500/[0.07] via-white/[0.03] to-violet-500/[0.05] p-5 sm:p-8">
       <div
         className={`absolute -right-20 -top-20 h-56 w-56 rounded-full bg-gradient-to-br ${p.accent} opacity-20 blur-3xl`}
@@ -42,6 +43,7 @@ function FeaturedProject({ p }: { p: Project }) {
               href={p.url}
               target="_blank"
               rel="noreferrer"
+              aria-label={`Visit site: ${new URL(p.url).hostname.replace(/^www\./, "")}`}
               className="inline-flex items-center gap-1 text-xs text-slate-400 transition-colors hover:text-white"
             >
               Visit site
@@ -131,6 +133,7 @@ function FeaturedProject({ p }: { p: Project }) {
         </div>
       </div>
     </Reveal>
+    </div>
   );
 }
 
@@ -158,6 +161,7 @@ function ProjectCard({ p, i }: { p: Project; i: number }) {
               href={p.url}
               target="_blank"
               rel="noreferrer"
+              aria-label={`Visit site: ${new URL(p.url).hostname.replace(/^www\./, "")}`}
               className="inline-flex items-center gap-1 text-xs text-slate-400 transition-colors hover:text-white"
             >
               Visit site

@@ -33,6 +33,15 @@ export default function Skills() {
                 </span>
               ))}
             </div>
+            {group.title === "Automation" && (
+              <a
+                href="#matzhub"
+                className="mt-4 inline-flex items-center gap-1 text-xs text-indigo-300 transition-colors hover:text-white"
+              >
+                See it running in MatzHub
+                <Icon name="arrow" className="h-3 w-3" />
+              </a>
+            )}
           </Reveal>
         ))}
       </div>
