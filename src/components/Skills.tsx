@@ -18,7 +18,7 @@ export default function Skills() {
             className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-colors hover:border-indigo-500/40 hover:bg-white/[0.05]"
           >
             <div className="mb-4 flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 text-indigo-400">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 text-indigo-400" aria-hidden="true">
                 <Icon name={group.icon} className="h-5 w-5" />
               </span>
               <h3 className="font-semibold text-white">{group.title}</h3>

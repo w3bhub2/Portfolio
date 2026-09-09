@@ -196,6 +196,7 @@ export type Project = {
   featured?: boolean;
   flow?: string[];
   stats?: { value: string; label: string }[];
+  diagram?: { src: string; alt: string; caption: string };
 };
 
 export const projects: Project[] = [
@@ -221,6 +222,11 @@ export const projects: Project[] = [
       "Live in the store",
       "Telegram reports back",
     ],
+    diagram: {
+      src: "/matzhub-architecture.svg",
+      alt: "MatzHub system architecture: suppliers post to WhatsApp, a persistent worker feeds a seven-step ingestion pipeline into Supabase, and a Next.js app on Vercel serves the store with AI, payment, notification and monitoring services around it.",
+      caption: "The full system, end to end — tap to open",
+    },
     stats: [
       { value: "10–15 min → under 1 min", label: "per listing, by hand vs. automated" },
       { value: "0", label: "uploads done by hand on most days" },

@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1080" role="img" aria-labelledby="mz-title mz-desc">
+<title id="mz-title">MatzHub system architecture diagram</title>
+<desc id="mz-desc">Flow from suppliers posting on WhatsApp, through a persistent worker and a seven-step ingestion pipeline, into Supabase storage, served by a Next.js application on Vercel with external services for AI, payments, notifications and monitoring.</desc>
+<rect width="1536" height="1080" fill="#f8fafc"/>
+<defs><marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><polygon points="0 0, 8 3.5, 0 7" fill="#64748b"/></marker></defs>
+<text x="768.0" y="44" font-family="ui-sans-serif, system-ui, sans-serif" font-size="34" font-weight="800" fill="#0f172a" text-anchor="middle">MatzHub</text>
+<text x="768.0" y="76" font-family="ui-sans-serif, system-ui, sans-serif" font-size="24" font-weight="700" fill="#0f172a" text-anchor="middle">System Architecture</text>
+<text x="768.0" y="100" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="normal" fill="#64748b" text-anchor="middle">From WhatsApp to Your Website — Seamlessly</text>
+<rect x="20" y="130" width="268" height="330" rx="12" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+<text x="36" y="160" font-family="ui-sans-serif, system-ui, sans-serif" font-size="15" font-weight="700" fill="#14532d" text-anchor="start">1.  External Actors</text>
+<rect x="36" y="176" width="236" height="118" rx="10" fill="#ffffff" stroke="#bbf7d0" stroke-width="1.5"/>
+<text x="52" y="202" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13.5" font-weight="700" fill="#1e293b" text-anchor="start">Supplier</text>
+<text x="52" y="224" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#475569" text-anchor="start">• Posts product photos/videos</text>
+<text x="52" y="241" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#475569" text-anchor="start">• Adds captions</text>
+<text x="52" y="258" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#475569" text-anchor="start">• Sends to WhatsApp group</text>
+<rect x="36" y="310" width="236" height="118" rx="10" fill="#ffffff" stroke="#bbf7d0" stroke-width="1.5"/>
+<text x="52" y="336" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13.5" font-weight="700" fill="#1e293b" text-anchor="start">Customer</text>
+<text x="52" y="358" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#475569" text-anchor="start">• Browses website</text>
+<text x="52" y="375" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#475569" text-anchor="start">• Adds products to cart</text>
+<text x="52" y="392" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#475569" text-anchor="start">• Places orders (WhatsApp / Online)</text>
+<rect x="360" y="130" width="258" height="420" rx="12" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+<text x="376" y="158" font-family="ui-sans-serif, system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e3a8a" text-anchor="start">2.  WhatsApp Worker</text>
+<text x="376" y="176" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#3b82f6" text-anchor="start">(Persistent — Google VM)</text>
+<rect x="376" y="192" width="226" height="58" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="392" y="216" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.5" font-weight="700" fill="#1e293b" text-anchor="start">Baileys WebSocket</text>
+<text x="392" y="234" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b" text-anchor="start">(maintains connection)</text>
+<rect x="376" y="260" width="226" height="58" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="392" y="284" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.5" font-weight="700" fill="#1e293b" text-anchor="start">Media Engine</text>
+<text x="392" y="302" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b" text-anchor="start">(ffmpeg + sharp)</text>
+<rect x="376" y="328" width="226" height="58" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="392" y="352" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.5" font-weight="700" fill="#1e293b" text-anchor="start">Session Store</text>
+<text x="392" y="370" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b" text-anchor="start">(encrypted in Supabase)</text>
+<rect x="376" y="396" width="226" height="58" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="392" y="420" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.5" font-weight="700" fill="#1e293b" text-anchor="start">Reconnection Logic</text>
+<text x="392" y="438" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b" text-anchor="start">(with exponential backoff)</text>
+<rect x="376" y="464" width="226" height="58" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="392" y="488" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.5" font-weight="700" fill="#1e293b" text-anchor="start">Command Interface</text>
+<text x="392" y="506" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b" text-anchor="start">(via Telegram bot)</text>
+<rect x="690" y="130" width="262" height="470" rx="12" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/>
+<text x="706" y="158" font-family="ui-sans-serif, system-ui, sans-serif" font-size="15" font-weight="700" fill="#4c1d95" text-anchor="start">3.  Ingestion Pipeline</text>
+<rect x="706" y="174" width="230" height="50" rx="10" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.5"/>
+<text x="722" y="195" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b" text-anchor="start">1. Deduplication</text>
+<text x="722" y="212" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b" text-anchor="start">(hash + unique index)</text>
+<rect x="706" y="234" width="230" height="50" rx="10" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.5"/>
+<text x="722" y="255" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b" text-anchor="start">2. Attribute Extraction</text>
+<text x="722" y="272" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b" text-anchor="start">(parse caption)</text>
+<rect x="706" y="294" width="230" height="50" rx="10" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.5"/>
+<text x="722" y="315" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b" text-anchor="start">3. Media Upload</text>
+<text x="722" y="332" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b" text-anchor="start">(to Supabase Storage)</text>
+<rect x="706" y="354" width="230" height="50" rx="10" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.5"/>
+<text x="722" y="375" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b" text-anchor="start">4. AI Enrichment</text>
+<text x="722" y="392" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b" text-anchor="start">(Gemini API · 7-day cache · 5 concurrent)</text>
+<rect x="706" y="414" width="230" height="50" rx="10" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.5"/>
+<text x="722" y="435" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b" text-anchor="start">5. Quality Gate</text>
+<text x="722" y="452" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b" text-anchor="start">(business rules &amp; validation)</text>
+<rect x="706" y="474" width="230" height="50" rx="10" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.5"/>
+<text x="722" y="495" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b" text-anchor="start">6. Publishing</text>
+<text x="722" y="512" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b" text-anchor="start">(insert to products table)</text>
+<rect x="706" y="534" width="230" height="50" rx="10" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.5"/>
+<text x="722" y="555" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b" text-anchor="start">7. Error Handling</text>
+<text x="722" y="572" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b" text-anchor="start">(retry 3x → dead letter queue)</text>
+<rect x="1024" y="130" width="268" height="420" rx="12" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+<text x="1040" y="158" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14.5" font-weight="700" fill="#134e4a" text-anchor="start">4.  Data Storage &amp; Database</text>
+<text x="1040" y="176" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#0d9488" text-anchor="start">(Supabase)</text>
+<rect x="1040" y="190" width="236" height="130" rx="10" fill="#ffffff" stroke="#99f6e4" stroke-width="1.5"/>
+<text x="1056" y="214" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.5" font-weight="700" fill="#1e293b" text-anchor="start">PostgreSQL Database</text>
+<text x="1056" y="236" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#475569" text-anchor="start">• Products</text>
+<text x="1056" y="253" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#475569" text-anchor="start">• Orders</text>
+<text x="1056" y="270" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#475569" text-anchor="start">• Users</text>
+<text x="1056" y="287" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#475569" text-anchor="start">• Logs</text>
+<rect x="1040" y="334" width="236" height="110" rx="10" fill="#ffffff" stroke="#99f6e4" stroke-width="1.5"/>
+<text x="1056" y="358" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.5" font-weight="700" fill="#1e293b" text-anchor="start">Object Storage</text>
+<text x="1056" y="380" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#475569" text-anchor="start">• Product media</text>
+<text x="1056" y="397" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#475569" text-anchor="start">• Sessions</text>
+<text x="1056" y="414" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#475569" text-anchor="start">• Assets</text>
+<rect x="1040" y="458" width="236" height="76" rx="10" fill="#ccfbf1" stroke="#5eead4" stroke-width="1.5"/>
+<text x="1056" y="478" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#134e4a" text-anchor="start">Free Tier Limits</text>
+<text x="1056" y="496" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10.5" font-weight="normal" fill="#475569" text-anchor="start">• 500MB database · 1GB storage</text>
+<text x="1056" y="511" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10.5" font-weight="normal" fill="#475569" text-anchor="start">• 50 concurrent connections</text>
+<rect x="1330" y="130" width="190" height="470" rx="12" fill="#faf5ff" stroke="#d8b4fe" stroke-width="1.5"/>
+<text x="1346" y="158" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="700" fill="#581c87" text-anchor="start">External Services</text>
+<rect x="1346" y="174" width="158" height="66" rx="10" fill="#ffffff" stroke="#e9d5ff" stroke-width="1.5"/>
+<text x="1358" y="198" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="start">Gemini API</text>
+<text x="1358" y="214" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9.5" font-weight="normal" fill="#64748b" text-anchor="start">60 req/min · AI</text>
+<text x="1358" y="227" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9.5" font-weight="normal" fill="#64748b" text-anchor="start">captions</text>
+<rect x="1346" y="250" width="158" height="66" rx="10" fill="#ffffff" stroke="#e9d5ff" stroke-width="1.5"/>
+<text x="1358" y="274" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="start">Cashfree</text>
+<text x="1358" y="290" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9.5" font-weight="normal" fill="#64748b" text-anchor="start">Payment Gateway ·</text>
+<text x="1358" y="303" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9.5" font-weight="normal" fill="#64748b" text-anchor="start">per-transaction fees</text>
+<rect x="1346" y="326" width="158" height="66" rx="10" fill="#ffffff" stroke="#e9d5ff" stroke-width="1.5"/>
+<text x="1358" y="350" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="start">UPI / Bank Transfer</text>
+<text x="1358" y="366" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9.5" font-weight="normal" fill="#64748b" text-anchor="start">Fallback payment · no</text>
+<text x="1358" y="379" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9.5" font-weight="normal" fill="#64748b" text-anchor="start">cost</text>
+<rect x="1346" y="402" width="158" height="66" rx="10" fill="#ffffff" stroke="#e9d5ff" stroke-width="1.5"/>
+<text x="1358" y="426" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="start">Telegram</text>
+<text x="1358" y="442" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9.5" font-weight="normal" fill="#64748b" text-anchor="start">Dev + Admin bots ·</text>
+<text x="1358" y="455" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9.5" font-weight="normal" fill="#64748b" text-anchor="start">free</text>
+<rect x="1346" y="478" width="158" height="66" rx="10" fill="#ffffff" stroke="#e9d5ff" stroke-width="1.5"/>
+<text x="1358" y="502" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="start">UptimeRobot</text>
+<text x="1358" y="518" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9.5" font-weight="normal" fill="#64748b" text-anchor="start">Health monitoring · 50</text>
+<text x="1358" y="531" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9.5" font-weight="normal" fill="#64748b" text-anchor="start">monitors</text>
+<line x1="288" y1="235" x2="360" y2="235" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+<text x="324" y="214" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10.5" font-weight="normal" fill="#64748b" text-anchor="middle">Sends product media &amp; details</text>
+<text x="324" y="226" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b" text-anchor="middle">(WhatsApp group)</text>
+<line x1="618" y1="310" x2="690" y2="310" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+<text x="654" y="292" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10.5" font-weight="normal" fill="#64748b" text-anchor="middle">Triggers ingestion</text>
+<line x1="952" y1="330" x2="1024" y2="330" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+<text x="988" y="312" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10.5" font-weight="normal" fill="#64748b" text-anchor="middle">Store media &amp; data</text>
+<line x1="1292" y1="220" x2="1330" y2="220" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+<text x="1311" y="206" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10.5" font-weight="normal" fill="#64748b" text-anchor="middle">AI calls</text>
+<line x1="1292" y1="370" x2="1330" y2="370" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+<text x="1311" y="356" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10.5" font-weight="normal" fill="#64748b" text-anchor="middle">Payments</text>
+<line x1="1292" y1="510" x2="1330" y2="510" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+<text x="1311" y="496" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10.5" font-weight="normal" fill="#64748b" text-anchor="middle">Monitoring</text>
+<rect x="20" y="650" width="740" height="350" rx="12" fill="#fdf2f8" stroke="#f9a8d4" stroke-width="1.5"/>
+<text x="36" y="678" font-family="ui-sans-serif, system-ui, sans-serif" font-size="15" font-weight="700" fill="#831843" text-anchor="start">5.  Vercel Application</text>
+<text x="196" y="678" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#be185d" text-anchor="start">(Next.js App Router)</text>
+<rect x="36" y="694" width="344" height="246" rx="10" fill="#ffffff" stroke="#fbcfe8" stroke-width="1.5"/>
+<text x="52" y="718" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e293b" text-anchor="start">Pages</text>
+<text x="52" y="742" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="start">• Home — featured products, categories, search</text>
+<text x="52" y="770" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="start">• Product List — filters &amp; pagination</text>
+<text x="52" y="798" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="start">• Product Detail — images, cart, WhatsApp checkout</text>
+<text x="52" y="826" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="start">• Cart — quantity &amp; removal</text>
+<text x="52" y="854" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="start">• Checkout — Cashfree + UPI/Bank transfer</text>
+<text x="52" y="882" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="start">• Search — full-text (pg_trgm)</text>
+<text x="52" y="910" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="start">• Admin — manage products, orders, logs</text>
+<rect x="396" y="694" width="344" height="246" rx="10" fill="#ffffff" stroke="#fbcfe8" stroke-width="1.5"/>
+<text x="412" y="718" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e293b" text-anchor="start">API Routes</text>
+<text x="412" y="742" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="start">• /api/products — product data</text>
+<text x="412" y="770" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="start">• /api/cart — cart state (cookies)</text>
+<text x="412" y="798" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="start">• /api/orders — create orders, update stock</text>
+<text x="412" y="826" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="start">• /api/health — service health</text>
+<text x="412" y="854" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="start">• /api/telegram/webhook — bot commands</text>
+<text x="412" y="882" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="start">• /api/cron/* — daily tasks (reconcile, cleanup)</text>
+<rect x="36" y="950" width="704" height="36" rx="10" fill="#fce7f3" stroke="#f9a8d4" stroke-width="1.5"/>
+<text x="388" y="973" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#831843" text-anchor="middle">Technologies:  Next.js (App Router)  ·  PostgreSQL (pg_trgm)  ·  Tailwind CSS</text>
+<rect x="830" y="650" width="330" height="350" rx="12" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+<text x="846" y="678" font-family="ui-sans-serif, system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e3a8a" text-anchor="start">6.  Frontend</text>
+<text x="950" y="678" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#3b82f6" text-anchor="start">(Customer Experience)</text>
+<rect x="846" y="706" width="298" height="56" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="862" y="739" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.5" font-weight="600" fill="#1e293b" text-anchor="start">Fast &amp; Responsive</text>
+<rect x="846" y="774" width="298" height="56" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="862" y="807" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.5" font-weight="600" fill="#1e293b" text-anchor="start">Product Catalog</text>
+<rect x="846" y="842" width="298" height="56" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="862" y="875" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.5" font-weight="600" fill="#1e293b" text-anchor="start">Secure Checkout</text>
+<rect x="846" y="910" width="298" height="56" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="862" y="943" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12.5" font-weight="600" fill="#1e293b" text-anchor="start">WhatsApp Integration</text>
+<rect x="1230" y="650" width="290" height="350" rx="12" fill="#fffbeb" stroke="#fcd34d" stroke-width="1.5"/>
+<text x="1246" y="678" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13.5" font-weight="700" fill="#78350f" text-anchor="start">7.  Supporting Infrastructure</text>
+<text x="1246" y="696" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="normal" fill="#b45309" text-anchor="start">(All Free Tier)</text>
+<rect x="1246" y="708" width="258" height="50" rx="10" fill="#ffffff" stroke="#fde68a" stroke-width="1.5"/>
+<text x="1258" y="729" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="start">Vercel</text>
+<text x="1258" y="746" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9.5" font-weight="normal" fill="#64748b" text-anchor="start">100k invocations/mo · 100GB bandwidth</text>
+<rect x="1246" y="765" width="258" height="50" rx="10" fill="#ffffff" stroke="#fde68a" stroke-width="1.5"/>
+<text x="1258" y="786" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="start">Cloudflare</text>
+<text x="1258" y="803" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9.5" font-weight="normal" fill="#64748b" text-anchor="start">DNS, TLS, optional tunnel · basic WAF</text>
+<rect x="1246" y="822" width="258" height="50" rx="10" fill="#ffffff" stroke="#fde68a" stroke-width="1.5"/>
+<text x="1258" y="843" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="start">Google Cloud E2-Micro / Fly.io</text>
+<text x="1258" y="860" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9.5" font-weight="normal" fill="#64748b" text-anchor="start">runs the WhatsApp worker</text>
+<rect x="1246" y="879" width="258" height="50" rx="10" fill="#ffffff" stroke="#fde68a" stroke-width="1.5"/>
+<text x="1258" y="900" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="start">Telegram</text>
+<text x="1258" y="917" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9.5" font-weight="normal" fill="#64748b" text-anchor="start">dev &amp; admin bots (free)</text>
+<rect x="1246" y="936" width="258" height="50" rx="10" fill="#ffffff" stroke="#fde68a" stroke-width="1.5"/>
+<text x="1258" y="957" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="start">UptimeRobot</text>
+<text x="1258" y="974" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9.5" font-weight="normal" fill="#64748b" text-anchor="start">50 monitors (free)</text>
+<line x1="154" y1="430" x2="154" y2="650" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+<text x="158" y="540.0" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10.5" font-weight="normal" fill="#64748b" text-anchor="middle">Browses, shops &amp; places orders</text>
+<line x1="489" y1="650" x2="489" y2="555" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+<text x="489" y="626" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10.5" font-weight="normal" fill="#64748b" text-anchor="middle">Sends alerts &amp; commands</text>
+<line x1="760" y1="820" x2="830" y2="820" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+<text x="795" y="802" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10.5" font-weight="normal" fill="#64748b" text-anchor="middle">Fetch data &amp; place orders</text>
+<line x1="1160" y1="820" x2="1230" y2="820" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+<text x="1195" y="802" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10.5" font-weight="normal" fill="#64748b" text-anchor="middle">Orders &amp; payments</text>
+<text x="768.0" y="1054" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="600" fill="#334155" text-anchor="middle">MatzHub  |  Smart Automation  ·  Scalable Growth  ·  100% Free Tier</text>
+</svg>

@@ -55,6 +55,31 @@ function FeaturedProject({ p }: { p: Project }) {
           {p.description}
         </p>
 
+        {p.diagram && (
+          <figure className="mt-5">
+            <a
+              href={p.diagram.src}
+              target="_blank"
+              rel="noreferrer"
+              className="block overflow-hidden rounded-xl border border-white/10 bg-white transition-colors hover:border-indigo-500/40"
+              aria-label="Open the full-size MatzHub architecture diagram in a new tab"
+            >
+              <img
+                src={p.diagram.src}
+                alt={p.diagram.alt}
+                width={1536}
+                height={1080}
+                loading="lazy"
+                decoding="async"
+                className="h-auto w-full"
+              />
+            </a>
+            <figcaption className="mt-2 text-center text-xs text-slate-500">
+              {p.diagram.caption}
+            </figcaption>
+          </figure>
+        )}
+
         {p.flow && (
           <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-2 text-xs sm:text-sm">
             {p.flow.map((step, i) => (
